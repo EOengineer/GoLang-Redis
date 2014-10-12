@@ -1,12 +1,17 @@
 package main
 
 import (
-"fmt"
 "github.com/go-martini/martini"
 "github.com/fzzy/radix/redis"
 "time"
-"os"
 )
+
+
+func errHndlr(err error) {
+  if err != nil {
+  }
+}
+
 
 func main() {
   m := martini.Classic()
@@ -15,19 +20,38 @@ func main() {
   errHndlr(err)
   defer c.Close()
 
-  m.Get("/", func() string {
-    return "Hello world!"
-  })
+  m.Group("/listings", func(r martini.Router) {
+    r.Get("", GetListingsIndex)
+    r.Get("/:id", GetListing)
+    r.Post("/new", NewListing)
+    r.Put("/update/:id", UpdateListing)
+    r.Delete("/delete/:id", DeleteListing)
+})
+
   m.Run()
 }
 
-
-func errHndlr(err error) {
-  if err != nil {
-    fmt.Println("error:", err)
-    os.Exit(1)
-  }
+func GetListingsIndex(params martini.Params) {
+  // return all listings
 }
+
+func GetListing(params martini.Params) {
+  // return single listing
+}
+
+func NewListing(params martini.Params) {
+  // create new listing
+}
+
+func UpdateListing(params martini.Params) {
+  // update a listing
+}
+
+func DeleteListing(params martini.Params) {
+  // delete a listing
+}
+
+
 
 
 
